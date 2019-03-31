@@ -3,26 +3,30 @@ package com.gaalihockey.server;
 import java.io.*;
 import java.net.*;
 
-public class Receiver extends Thread {
-    private BufferedReader in;
+public class Receiver implements Runnable {
     private Socket clientSocket;
+    private BufferedReader in;
     private MatchThread match;
 
-    public Receiver(BufferedReader in, Socket clientSocket, MatchThread match) {
-        this.in = in;
-        this.clientSocket = clientSocket;
-        this.match = match;
+    public Receiver(Socket clientSocket, MatchThread match) {
+        try {
+            this.clientSocket = clientSocket;
+            this.in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            this.match = match;
+        } catch (IOException e) {
+            throw new RuntimeException("Could not open client socket", e);
+        }
     }
 
     @Override
     public void run() {
         String inputLine;
         try {
-            while ((inputLine = in.readLine()) != null) {
+            while ((inputLine = this.in.readLine()) != null) {
                 // Handle input from client in MatchPool
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException("Could not read line", e);
         }
     }
 }

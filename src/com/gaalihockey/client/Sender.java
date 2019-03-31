@@ -1,12 +1,19 @@
 package com.gaalihockey.client;
 
+import java.net.*;
 import java.io.*;
 
-public class Sender extends Thread {
+public class Sender implements Runnable {
+    private Socket clientSocket;
     private PrintWriter out;
 
-    public Sender(PrintWriter out) {
-        this.out = out;
+    public Sender(Socket clientSocket) {
+        this.clientSocket = clientSocket;
+        try {
+            this.out = new PrintWriter(clientSocket.getOutputStream(), true);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not write output", e);
+        }
     }
 
     @Override

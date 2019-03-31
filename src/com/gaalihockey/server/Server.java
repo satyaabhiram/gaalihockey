@@ -9,11 +9,16 @@ public class Server {
     public void startServer(int port) {
         try {
             serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot open port " + port, e);
+        }
+
+        try {
             while (true) {
-                new ClientHandler(serverSocket.accept()).start();
+                new Thread(new ClientHandler(serverSocket.accept())).start();
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException("Error accepting client connection", e);
         }
     }
 
@@ -21,12 +26,12 @@ public class Server {
         try {
             serverSocket.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException("Unable to close server", e);
         }
     }
 
     public static void main(String[] args) {
-        System.out.println("Server started!\n\n\n");
+        System.out.println("Server started!");
         Server server = new Server();
         server.startServer(1234);
     }
