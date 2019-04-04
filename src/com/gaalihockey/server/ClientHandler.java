@@ -20,6 +20,15 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
+        this.joinGame();
+
+        this.receiver = new Receiver(this.clientSocket, this.matchThread);
+        this.sender = new Sender(this.clientSocket, this.matchThread);
+        new Thread(this.receiver).start();
+        new Thread(this.sender).start();
+    }
+
+    private void joinGame() {
         if (this.matchThread == null && openMatchThread == null) {
             this.matchThread = new MatchThread();
             openMatchThread = this.matchThread;
@@ -30,10 +39,5 @@ public class ClientHandler implements Runnable {
             new Thread(this.matchThread).start();
             openMatchThread = null;
         }
-
-        this.receiver = new Receiver(this.clientSocket, this.matchThread);
-        this.sender = new Sender(this.clientSocket, this.matchThread);
-        new Thread(this.receiver).start();
-        new Thread(this.sender).start();
     }
 }
