@@ -1,5 +1,7 @@
 package com.gaalihockey.client;
 
+import com.gaalihockey.client.game.Game;
+
 import java.net.*;
 import java.io.*;
 
@@ -22,6 +24,7 @@ public class Client {
         this.sender = new Sender(clientSocket);
         new Thread(this.receiver).start();
         new Thread(this.sender).start();
+        javafx.application.Application.launch(Game.class);
     }
 
     public void stopConnection() {
