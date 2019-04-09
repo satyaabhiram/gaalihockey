@@ -14,10 +14,16 @@ import static javafx.scene.input.KeyCode.*;
 
 public class Game extends Application {
 
-    private final double puckMovement=5;
+    private final double sliderMovement=5;
     private double arenaTopY;
     private double arenaBottomY;
+    private double scoreSize=50.0f;
 
+    public static Rectangle player1Slider=null;
+    public static Rectangle player2Slider=null;
+    public static Circle puck=null;
+
+    public static boolean isPlayer1;
     @Override
     public void start(Stage stage) throws Exception{
 
@@ -33,42 +39,58 @@ public class Game extends Application {
         arenaBottomY=arena.getY()+arena.getHeight();
 
         //Rectangle Object for Player 1 Puck
-        Rectangle player1Puck = new Rectangle();
-        player1Puck.setX(170.0f);
-        player1Puck.setY(290.0f);
-        player1Puck.setWidth(10.0f);
-        player1Puck.setHeight(70.0f);
-        player1Puck.setFill(Color.WHITE);
+        player1Slider = new Rectangle();
+        player1Slider.setX(170.0f);
+        player1Slider.setY(290.0f);
+        player1Slider.setWidth(10.0f);
+        player1Slider.setHeight(70.0f);
+        player1Slider.setFill(Color.WHITE);
 
-        arenaBottomY-=player1Puck.getHeight();
+        arenaBottomY-=player1Slider.getHeight();
 
         //Rectangle Object for Player 2 Puck
-        Rectangle player2Puck = new Rectangle();
-        player2Puck.setX(1120.0f);
-        player2Puck.setY(290.0f);
-        player2Puck.setWidth(10.0f);
-        player2Puck.setHeight(70.0f);
-        player2Puck.setFill(Color.WHITE);
+        player2Slider = new Rectangle();
+        player2Slider.setX(1120.0f);
+        player2Slider.setY(290.0f);
+        player2Slider.setWidth(10.0f);
+        player2Slider.setHeight(70.0f);
+        player2Slider.setFill(Color.WHITE);
 
-        //Circle Object for Ball
-        Circle ball=new Circle();
-        ball.setCenterX(650.0f);
-        ball.setCenterY(325.0f);
-        ball.setRadius(15.0f);
-        ball.setFill(Color.WHITE);
+        //Circle Object for puck
+        puck=new Circle();
+        puck.setCenterX(650.0f);
+        puck.setCenterY(325.0f);
+        puck.setRadius(15.0f);
+        puck.setFill(Color.WHITE);
 
+        //Rectangle for Player 1 Score
+        Rectangle player1Score = new Rectangle();
+        player1Score.setX(arena.getX()+arena.getWidth()/2 - 100.0f);
+        player1Score.setY(arena.getY());
+        player1Score.setHeight(scoreSize);
+        player1Score.setWidth(scoreSize);
+        player1Score.setFill(Color.RED);
 
+        //Rectangle for Player 2 Score
+        Rectangle player2Score = new Rectangle();
+        player2Score.setX(arena.getX()+arena.getWidth()/2 + 50.0f);
+        player2Score.setY(arena.getY());
+        player2Score.setHeight(scoreSize);
+        player2Score.setWidth(scoreSize);
+        player2Score.setFill(Color.RED);
 
         //Creating a Group object
         Group root = new Group(arena);
-        root.getChildren().add(player1Puck);
-        root.getChildren().add(player2Puck);
-        root.getChildren().add(ball);
+        root.getChildren().add(player1Slider);
+        root.getChildren().add(player2Slider);
+        root.getChildren().add(puck);
+        root.getChildren().add(player1Score);
+        root.getChildren().add(player2Score);
         //Creating a scene object
-        Scene scene = new Scene(root, 1200, 900);
+        Scene scene = new Scene(root, 900, 600);
 
-        movePuckOnKeyPress(scene, player1Puck);
-        //moveBallOnKeyPress(scene, ball);
+        movePuckOnKeyPress(scene, player1Slider);
+        //movepuckOnKeyPress(scene, puck);
         //Setting title to the Stage
         stage.setTitle("Air Hockey");
 
@@ -83,8 +105,8 @@ public class Game extends Application {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override public void handle(KeyEvent event) {
                 double currentPos=myPuck.getY();
-                double newPos1=currentPos-puckMovement;
-                double newPos2=currentPos+puckMovement;
+                double newPos1=currentPos-sliderMovement;
+                double newPos2=currentPos+sliderMovement;
                 if(event.getCode()==UP){
                     if(arenaTopY<=newPos1 &&  arenaBottomY>=newPos1){
                         myPuck.setY(newPos1);
@@ -99,13 +121,13 @@ public class Game extends Application {
     }
 
     /*
-    private void moveBallOnKeyPress (Scene scene, final Circle myBall) {
+    private void movepuckOnKeyPress (Scene scene, final Circle mypuck) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override public void handle(KeyEvent event) {
                 if(event.getCode()==LEFT){
-                    myBall.setCenterX(myBall.getCenterX()- 13.0f);
+                    mypuck.setCenterX(mypuck.getCenterX()- 13.0f);
                 }else if(event.getCode()==RIGHT) {
-                    myBall.setCenterX(myBall.getCenterX()+ 13.0f);
+                    mypuck.setCenterX(mypuck.getCenterX()+ 13.0f);
                 }
             }
         });
