@@ -7,6 +7,8 @@ import java.io.*;
 
 public class Client {
     private Socket clientSocket;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
 
     private Receiver receiver;
     private Sender sender;
@@ -14,16 +16,19 @@ public class Client {
     public void startConnection(String ip, int port) {
         try {
             this.clientSocket = new Socket(ip, port);
+            this.in = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
+            this.out = new ObjectOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
+            this.out.flush();
         } catch (IOException e) {
             throw new RuntimeException("Could not open client socket", e);
         }
     }
 
     public void startGame() {
-        this.receiver = new Receiver(clientSocket);
-        this.sender = new Sender(clientSocket);
-        new Thread(this.receiver).start();
+        this.sender = new Sender(this.out);
         new Thread(this.sender).start();
+        this.receiver = new Receiver(this.in);
+        new Thread(this.receiver).start();
         javafx.application.Application.launch(Game.class);
     }
 

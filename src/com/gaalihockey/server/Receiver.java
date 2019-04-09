@@ -1,32 +1,29 @@
 package com.gaalihockey.server;
 
+import com.gaalihockey.message.Message;
+
 import java.io.*;
-import java.net.*;
 
 public class Receiver implements Runnable {
-    private Socket clientSocket;
-    private BufferedReader in;
+    private ObjectInputStream in;
     private MatchThread match;
 
-    public Receiver(Socket clientSocket, MatchThread match) {
-        try {
-            this.clientSocket = clientSocket;
-            this.in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            this.match = match;
-        } catch (IOException e) {
-            throw new RuntimeException("Could not open client socket", e);
-        }
+    public Receiver(ObjectInputStream in, MatchThread match) {
+        this.in = in;
+        this.match = match;
     }
 
     @Override
     public void run() {
-        String inputLine;
+        Message inputMessage;
         try {
-            while ((inputLine = this.in.readLine()) != null) {
+            while ((inputMessage = (Message) this.in.readObject()) != null) {
                 // Handle input from client in MatchPool
             }
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Could not read message", e);
         } catch (IOException e) {
-            throw new RuntimeException("Could not read line", e);
+            throw new RuntimeException("Could not read message", e);
         }
     }
 }
