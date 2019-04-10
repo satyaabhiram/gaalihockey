@@ -1,7 +1,9 @@
 package com.gaalihockey.client.game;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -9,12 +11,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import static javafx.scene.input.KeyCode.*;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+
 public class Game extends Application {
 
-    private final double sliderMovement=5;
+    private final double sliderMovement=10;
     private double arenaTopY;
     private double arenaBottomY;
     private double scoreSize=50.0f;
@@ -40,7 +47,7 @@ public class Game extends Application {
 
         //Rectangle Object for Player 1 Puck
         player1Slider = new Rectangle();
-        player1Slider.setX(170.0f);
+        player1Slider.setX(210.0f);
         player1Slider.setY(290.0f);
         player1Slider.setWidth(10.0f);
         player1Slider.setHeight(70.0f);
@@ -50,7 +57,7 @@ public class Game extends Application {
 
         //Rectangle Object for Player 2 Puck
         player2Slider = new Rectangle();
-        player2Slider.setX(1120.0f);
+        player2Slider.setX(1080.0f);
         player2Slider.setY(290.0f);
         player2Slider.setWidth(10.0f);
         player2Slider.setHeight(70.0f);
@@ -99,6 +106,38 @@ public class Game extends Application {
 
         //Displaying the contents of the stage
         stage.show();
+        
+        Bounds bounds = arena.getBoundsInLocal();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20),
+        		new EventHandler<ActionEvent>() {
+        	double dx = 7;
+        	double dy = 5;
+        	
+        	public void handle(ActionEvent t) {
+        		puck.setCenterX(puck.getCenterX()+dx);
+        		puck.setCenterY(puck.getCenterY()+dy);
+        		System.out.println(puck.getCenterX());
+        		//System.out.println(puck.getLayoutY());
+        		
+        		if(puck.getCenterX() <= (bounds.getMinX() + puck.getRadius()) || 
+                        puck.getCenterX() >= (bounds.getMaxX() - puck.getRadius()) ){
+
+                	dx = -dx;
+
+                }
+        		
+        		//If the ball reaches the bottom or top border make the step negative
+                if((puck.getCenterY() >= (bounds.getMaxY() - puck.getRadius())) || 
+                        (puck.getCenterY() <= (bounds.getMinY() + puck.getRadius()))){
+
+                	dy = -dy;
+
+                }
+        	}
+        }));
+            //    new KeyValue(puck.layoutXProperty(), bounds.getMaxX()-puck.getRadius())));
+        timeline.setCycleCount(timeline.INDEFINITE);
+        timeline.play();
     }
 
     private void movePuckOnKeyPress(Scene scene, final Rectangle myPuck) {
