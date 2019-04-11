@@ -1,18 +1,44 @@
 package com.gaalihockey.server;
 
+import com.gaalihockey.message.Message;
+import com.gaalihockey.message.MessageType;
+
 import java.io.*;
 
-public class Sender implements Runnable {
+public class Sender {
     private ObjectOutputStream out;
-    private MatchThread match;
 
-    public Sender(ObjectOutputStream out, MatchThread match) {
+    public Sender(ObjectOutputStream out) {
         this.out = out;
-        this.match = match;
     }
 
-    @Override
-    public void run() {
-        // Get output from match and send to client
+    public static void sendMessage(ObjectOutputStream out, MessageType messageType, String value1) {
+        Message m = new Message(messageType, value1);
+        try {
+            out.writeObject(m);
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not write output", e);
+        }
+    }
+
+    public void sendMessage(MessageType messageType, String value1) {
+        Message m = new Message(messageType, value1);
+        try {
+            this.out.writeObject(m);
+            this.out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not write output", e);
+        }
+    }
+
+    public void sendMessage(MessageType messageType, String value1, String value2) {
+        Message m = new Message(messageType, value1, value2);
+        try {
+            this.out.writeObject(m);
+            this.out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not write output", e);
+        }
     }
 }

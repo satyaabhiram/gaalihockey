@@ -2,26 +2,17 @@ package com.gaalihockey.server;
 
 import com.gaalihockey.message.Message;
 import com.gaalihockey.message.MessageType;
+import com.gaalihockey.server.game.Player;
+import com.gaalihockey.server.game.Puck;
 
 import java.io.*;
 import java.util.*;
 
 public class MatchThread implements Runnable {
-    private ObjectOutputStream out1, out2;
-
-    private boolean open = true;
-
-    private double player1score, player2score,
-            player1position, player2position,
-            puckX, puckY, puckVelocityX, puckVelocityY;
-
-    public MatchThread(ObjectOutputStream out1) {
-        this.out1 = out1;
-    }
-
-    public void setClient2(ObjectOutputStream out2) {
-        this.out2 = out2;
-    }
+    private Player player1, player2;
+    private PlayerCommunication playerCommunication1, playerCommunication2;
+    private Puck puck;
+    private boolean open;
 
     public boolean isOpen() {
         return open;
@@ -31,52 +22,64 @@ public class MatchThread implements Runnable {
         this.open = open;
     }
 
+    public MatchThread() {
+        this.puck = new Puck();
+        this.open = true;
+    }
+
+    public void setPlayer1(ObjectOutputStream out, ObjectInputStream in) {
+        this.player1 = new Player(1);
+        this.playerCommunication1 = new PlayerCommunication(this.player1, out, in);
+        this.playerCommunication1.sendWaitingMessage();
+        this.playerCommunication1.sendInitializationMessage();
+    }
+
+    public void setPlayer2(ObjectOutputStream out, ObjectInputStream in) {
+        this.player2 = new Player(2);
+        this.playerCommunication2 = new PlayerCommunication(this.player2, out, in);
+        this.playerCommunication1.sendMatchFoundMessage();
+        this.playerCommunication2.sendInitializationMessage();
+    }
+
     @Override
     public void run() {
         // Initialize match
-        Message m = new Message(MessageType.TEXT, "Match Started!");
-        try {
-            this.out1.writeObject(m);
-            this.out1.flush();
-            this.out2.writeObject(m);
-            this.out2.flush();
-        } catch (IOException e) {
-            throw new RuntimeException("could not write output", e);
-        }
+        this.playerCommunication1.sendMatchStartedMessage();
+        this.playerCommunication2.sendMatchStartedMessage();
 
         // Reset score
         this.updateScore(0, 0);
         // Reset puck position
         this.resetPuckPosition();
         // Reset strikers
-        this.resetStrikerPositions();
+        this.resetPlayerPositions();
         // Initialize random velocity to puck
         this.initializePuckVelocity();
         // Update puck position in loop
         this.startPuckPositionUpdater();
     }
 
-    private void updateScore(double player1score, double player2score) {
-        this.player1score = player1score;
-        this.player2score = player2score;
+    private void updateScore(int player1score, int player2score) {
+        this.player1.setScore(player1score);
+        this.player2.setScore(player2score);
     }
 
-    void resetPuckPosition() {
-        this.puckX = 0;
-        this.puckY = 0;
+    private void resetPuckPosition() {
+        this.puck.setX(0);
+        this.puck.setY(0);
     }
 
-    void resetStrikerPositions() {
-        this.player1position = 0;
-        this.player2position = 0;
+    private void resetPlayerPositions() {
+        this.player1.setX(0);
+        this.player2.setY(0);
     }
 
-    void initializePuckVelocity() {
-        this.puckVelocityX = (int)(Math.random() * 1000);
-        this.puckVelocityY = (int)(Math.random() * 1000);
+    private void initializePuckVelocity() {
+        this.puck.setVelocityX((int)(Math.random() * 1000));
+        this.puck.setVelocityY((int)(Math.random() * 1000));
     }
 
-    void startPuckPositionUpdater() {
+    private void startPuckPositionUpdater() {
         TimerTask repeatedTask = new TimerTask() {
             @Override
             public void run () {
@@ -91,17 +94,10 @@ public class MatchThread implements Runnable {
     }
 
     private void updatePuckPosition() {
-        this.puckX += this.puckVelocityX;
-        this.puckY += this.puckVelocityY;
+        this.puck.setX(this.puck.getX() + this.puck.getVelocityX());
+        this.puck.setY(this.puck.getY() + this.puck.getVelocityY());
 
-        Message m = new Message(MessageType.PUCK, Double.toString(this.puckX), Double.toString(this.puckY));
-        try {
-            this.out1.writeObject(m);
-            this.out1.flush();
-            this.out2.writeObject(m);
-            this.out2.flush();
-        } catch (IOException e) {
-            throw new RuntimeException("Could not write output", e);
-        }
+        this.playerCommunication1.sendPuckPosition(this.puck.getX(), this.puck.getY());
+        this.playerCommunication2.sendPuckPosition(this.puck.getX(), this.puck.getY());
     }
 }
