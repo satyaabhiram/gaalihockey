@@ -6,6 +6,8 @@ public class Player {
     double x;
     double y;
 
+    Player opponent;
+
     public Player(int number) {
         this.number = number;
     }
@@ -36,5 +38,13 @@ public class Player {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public Player getOpponent() {
+        return this.opponent;
+    }
+
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
     }
 }
