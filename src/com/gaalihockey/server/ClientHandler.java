@@ -53,7 +53,13 @@ public class ClientHandler implements Runnable {
 
             this.matchThread.setPlayer2(this.out, this.in);
 
-            new Thread(this.matchThread).start();
+            Thread mt = new Thread(this.matchThread);
+            mt.start();
+            try {
+                mt.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             openMatchThread = null;
         }

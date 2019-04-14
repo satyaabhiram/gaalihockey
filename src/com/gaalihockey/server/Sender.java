@@ -23,6 +23,11 @@ public class Sender implements Runnable {
     public void run() {
         while ((true)) {
             // Write output when Game variables change
+            try {
+                wait(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             this.sendPuckPosition();
             this.sendOpponentPosition();
             this.sendScore();

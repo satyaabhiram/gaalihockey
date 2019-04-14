@@ -24,8 +24,20 @@ public class PlayerCommunication {
     }
 
     public void startCommunication() {
-        new Thread(this.receiver).start();
-        new Thread(this.sender).start();
+        Thread rt = new Thread(this.receiver);
+        rt.start();
+        try {
+            rt.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Thread st = new Thread(this.sender);
+        st.start();
+        try {
+            st.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void sendSearchingMessage(ObjectOutputStream out) {
