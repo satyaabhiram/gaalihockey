@@ -6,6 +6,9 @@ public class Player {
     double x;
     double y;
 
+    final double WIDTH_X = 20;
+    final double WIDTH_Y = 80;
+
     Player opponent;
 
     public Player(int number) {
@@ -34,6 +37,22 @@ public class Player {
 
     public double getY() {
         return this.y;
+    }
+
+    public double getLowerX() {
+        return this.x - this.WIDTH_X/2;
+    }
+
+    public double getHigherX() {
+        return this.x + this.WIDTH_X/2;
+    }
+
+    public double getLowerY() {
+    return this.y - this.WIDTH_Y/2;
+    }
+
+    public double getHigherY() {
+        return this.y + this.WIDTH_Y/2;
     }
 
     public void setY(double y) {

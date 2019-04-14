@@ -1,10 +1,6 @@
 package com.gaalihockey.server;
 
-import com.gaalihockey.message.Message;
-import com.gaalihockey.message.MessageType;
 import com.gaalihockey.server.game.Game;
-import com.gaalihockey.server.game.Player;
-import com.gaalihockey.server.game.Puck;
 
 import java.io.*;
 import java.util.*;
@@ -49,28 +45,61 @@ public class MatchThread implements Runnable {
         this.playerCommunication2.startCommunication();
 
         // Reset score
-        this.game.updateScore(0, 0);
+        this.game.resetScore();
         // Reset puck position
         this.game.resetPuckPosition();
         // Reset strikers
         this.game.resetPlayerPositions();
         // Initialize random velocity to puck
         this.game.initializePuckVelocity();
+
         // Update puck position in loop
         this.startPuckPositionUpdater();
+        // Watch for wall collisions in loop
+        this.startWallCollisionWatcher();
+        // Watch for striker hits in loop
+        this.startStrikerHitWatcher();
     }
 
     private void startPuckPositionUpdater() {
         TimerTask repeatedTask = new TimerTask() {
             @Override
-            public void run () {
+            public void run() {
                 game.updatePuckPosition();
             }
         };
 
         Timer timer = new Timer();
         long delay = 0L;
-        long period = (long) 10;
+        long period = (long) 1;
+        timer.scheduleAtFixedRate(repeatedTask, delay, period);
+    }
+
+    private void startWallCollisionWatcher() {
+        TimerTask repeatedTask = new TimerTask() {
+            @Override
+            public void run() {
+                game.watchForWallCollisions();
+            }
+        };
+
+        Timer timer = new Timer();
+        long delay = 0L;
+        long period = (long) 1;
+        timer.scheduleAtFixedRate(repeatedTask, delay, period);
+    }
+
+    private void startStrikerHitWatcher() {
+        TimerTask repeatedTask = new TimerTask() {
+            @Override
+            public void run() {
+                game.watchForStrikerHits();
+            }
+        };
+
+        Timer timer = new Timer();
+        long delay = 0L;
+        long period = (long) 1;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
 }

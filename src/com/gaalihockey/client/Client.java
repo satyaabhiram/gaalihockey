@@ -5,6 +5,10 @@ import com.gaalihockey.client.game.Game;
 import java.net.*;
 import java.io.*;
 
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+
 public class Client {
     private Socket clientSocket;
     private ObjectOutputStream out;
@@ -25,11 +29,16 @@ public class Client {
     }
 
     public void startGame() {
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Application.launch(Game.class);
+            }
+        }).start();*/
         this.sender = new Sender(this.out);
         new Thread(this.sender).start();
         this.receiver = new Receiver(this.in);
         new Thread(this.receiver).start();
-        javafx.application.Application.launch(Game.class);
     }
 
     public void stopConnection() {
