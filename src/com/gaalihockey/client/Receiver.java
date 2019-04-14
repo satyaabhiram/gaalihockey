@@ -52,11 +52,11 @@ public class Receiver implements Runnable {
                         double xPos=Double.parseDouble(inputMessage.getValue1());
                         double yPos=Double.parseDouble(inputMessage.getValue2());
                         if(Game.isPlayer1==true){
-                            Game.player1Striker.setX(xPos);
-                            Game.player1Striker.setY(yPos);
-                        }else{
                             Game.player2Striker.setX(xPos);
                             Game.player2Striker.setY(yPos);
+                        }else{
+                            Game.player1Striker.setX(xPos);
+                            Game.player1Striker.setY(yPos);
                         }
                         break;
 
