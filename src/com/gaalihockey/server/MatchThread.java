@@ -37,6 +37,9 @@ public class MatchThread implements Runnable {
 
     @Override
     public void run() {
+        // Start match
+        this.playerCommunication1.sendStartMatchMessage();
+        this.playerCommunication2.sendStartMatchMessage();
         // Initialize match
         this.playerCommunication1.sendMatchStartedMessage();
         this.playerCommunication2.sendMatchStartedMessage();

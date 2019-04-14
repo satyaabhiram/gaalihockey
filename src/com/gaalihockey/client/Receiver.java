@@ -1,6 +1,7 @@
 package com.gaalihockey.client;
 
 import com.gaalihockey.client.game.Game;
+import com.gaalihockey.client.game.GameController;
 import com.gaalihockey.message.Message;
 import com.gaalihockey.message.MessageType;
 
@@ -17,7 +18,7 @@ public class Receiver implements Runnable {
     public void run() {
         Message inputMessage;
         try {
-            while ((inputMessage = (Message) this.in.readObject()) != null) {
+            while (!(inputMessage = (Message) this.in.readObject()).equals(null)) {
                 System.out.println("Message from server!\nType: " + inputMessage.getMessageType() + "\nBody: " + inputMessage.getValue1() + ", " + inputMessage.getValue2());
                 // Handle input from server in swing
 
@@ -25,6 +26,10 @@ public class Receiver implements Runnable {
 
                 switch (mType){
                     case TEXT:
+                        break;
+
+                    case START:
+                        GameController.startGame();
                         break;
 
                     case INITIALIZE:

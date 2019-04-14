@@ -18,6 +18,10 @@ public class Message implements Serializable {
         return value2;
     }
 
+    public Message(MessageType messageType) {
+        this.messageType = messageType;
+    }
+
     public Message(MessageType messageType, String value1) {
         this.messageType = messageType;
         this.value1 = value1;

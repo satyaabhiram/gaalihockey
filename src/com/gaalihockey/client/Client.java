@@ -1,13 +1,7 @@
 package com.gaalihockey.client;
 
-import com.gaalihockey.client.game.Game;
-
 import java.net.*;
 import java.io.*;
-
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
 
 public class Client {
     private Socket clientSocket;
@@ -36,9 +30,21 @@ public class Client {
             }
         }).start();*/
         this.sender = new Sender(this.out);
-        new Thread(this.sender).start();
+        Thread senderThread = new Thread(this.sender);
+        senderThread.start();
+        try {
+            senderThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.receiver = new Receiver(this.in);
-        new Thread(this.receiver).start();
+        Thread receiverThread = new Thread(this.receiver);
+        receiverThread.start();
+        try {
+            receiverThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void stopConnection() {

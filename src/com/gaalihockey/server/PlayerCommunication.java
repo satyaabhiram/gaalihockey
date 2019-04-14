@@ -48,6 +48,10 @@ public class PlayerCommunication {
         MessageUtil.sendMessage(out, MessageType.TEXT, "Match Started!");
     };
 
+    public void sendStartMatchMessage() {
+        MessageUtil.sendMessage(out, MessageType.START);
+    }
+
     public void sendPuckPosition(double puckX, double puckY) {
         MessageUtil.sendMessage(out, MessageType.PUCK, Double.toString(puckX), Double.toString(puckY));
     }

@@ -1,9 +1,7 @@
 package com.gaalihockey.client.game;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -11,13 +9,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import static javafx.scene.input.KeyCode.*;
 
 public class Game extends Application {
 
-    private final double strikerMovement=25;
+    private final double strikerMovement=30;
     private double arenaTopY;
     private double arenaBottomY;
     private double scoreSize=50.0f;
@@ -52,7 +49,7 @@ public class Game extends Application {
 
         //Rectangle Object for Player 2 Puck
         player2Striker = new Rectangle();
-        player2Striker.setX(940.0f);
+        player2Striker.setX(970.0f);
         player2Striker.setY(250.0f);
         player2Striker.setWidth(10.0f);
         player2Striker.setHeight(70.0f);
@@ -104,8 +101,6 @@ public class Game extends Application {
 
         //Displaying the contents of the stage
         stage.show();
-        
-        Bounds bounds = arena.getBoundsInLocal();
     }
 
     private void moveStrikerOnKeyPress(Scene scene, final Rectangle myStriker) {
@@ -125,5 +120,10 @@ public class Game extends Application {
                 }
             }
         });
+    }
+
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

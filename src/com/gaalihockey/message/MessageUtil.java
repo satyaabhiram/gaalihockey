@@ -17,6 +17,16 @@ public class MessageUtil {
         return m;
     }
 
+    public static void sendMessage(ObjectOutputStream out, MessageType messageType) {
+        Message m = new Message(messageType);
+        try {
+            out.writeObject(m);
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException("Could not write output", e);
+        }
+    }
+
     public static void sendMessage(ObjectOutputStream out, MessageType messageType, String value1) {
         Message m = new Message(messageType, value1);
         try {
