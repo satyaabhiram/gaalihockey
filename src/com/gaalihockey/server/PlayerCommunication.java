@@ -26,15 +26,23 @@ public class PlayerCommunication {
     public void startCommunication() {
         Thread rt = new Thread(this.receiver);
         rt.start();
-        try {
-            rt.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        //Commented this part of code
+//        try {
+//        	System.out.println("in Receiver thread");
+//            rt.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        
+        //This statements will only execute when Thread rt is joined== closed.\ so 
         Thread st = new Thread(this.sender);
         st.start();
         try {
+        	
             st.join();
+            System.out.println("in sender thread");
+            //Placing join rt here
+            rt.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

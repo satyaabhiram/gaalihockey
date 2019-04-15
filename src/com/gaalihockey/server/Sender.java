@@ -21,13 +21,18 @@ public class Sender implements Runnable {
 
     @Override
     public void run() {
-        while ((true)) {
+        while (true) {
             // Write output when Game variables change
             try {
-                wait(1);
+                wait();
+//                this.sendPuckPosition();
+//                this.sendOpponentPosition();
+//                this.sendScore();
+//                System.out.println("in send");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            // This three function calls will never happen
             this.sendPuckPosition();
             this.sendOpponentPosition();
             this.sendScore();

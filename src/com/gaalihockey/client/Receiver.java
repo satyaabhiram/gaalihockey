@@ -62,6 +62,12 @@ public class Receiver implements Runnable {
 
                     case SCORE:
                         break;
+                        
+                    case STRIKER:
+                    	break;
+                    	
+                    default:
+                    	break;
                 }
             }
         } catch (ClassNotFoundException e) {
