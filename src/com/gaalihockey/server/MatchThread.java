@@ -74,7 +74,7 @@ public class MatchThread implements Runnable {
 
         Timer timer = new Timer();
         long delay = 0L;
-        long period = (long) 1;
+        long period = (long) 1000;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
 
@@ -87,8 +87,8 @@ public class MatchThread implements Runnable {
         };
 
         Timer timer = new Timer();
-        long delay = 0L;
-        long period = (long) 1;
+        long delay = 1L;
+        long period = (long) 1000;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
 
@@ -101,8 +101,8 @@ public class MatchThread implements Runnable {
         };
 
         Timer timer = new Timer();
-        long delay = 0L;
-        long period = (long) 1;
+        long delay = 2L;
+        long period = (long) 1000;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
 }

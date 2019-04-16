@@ -7,6 +7,7 @@ import com.gaalihockey.server.game.Game;
 import com.gaalihockey.server.game.Player;
 
 import java.io.*;
+import java.util.concurrent.TimeUnit;
 
 public class Sender implements Runnable {
     private Game game;
@@ -24,18 +25,17 @@ public class Sender implements Runnable {
         while (true) {
             // Write output when Game variables change
             try {
-                wait();
-//                this.sendPuckPosition();
-//                this.sendOpponentPosition();
-//                this.sendScore();
-//                System.out.println("in send");
+                TimeUnit.MILLISECONDS.sleep(1000);
+                this.sendPuckPosition();
+                this.sendOpponentPosition();
+                this.sendScore();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            // This three function calls will never happen
-            this.sendPuckPosition();
-            this.sendOpponentPosition();
-            this.sendScore();
+//            // This three function calls will never happen
+//            this.sendPuckPosition();
+//            this.sendOpponentPosition();
+//            this.sendScore();
         }
     }
 

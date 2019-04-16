@@ -25,8 +25,10 @@ public class Game extends Application {
 
     public static boolean isPlayer1 = true;
 
+    public static boolean MATCH_STARTED = false;
+
     @Override
-    public void start(Stage stage) throws Exception{
+    public void start(Stage stage) {
         //Rectangle Object for Arena
         Rectangle arena = new Rectangle();
         arena.setX(0.0f);
@@ -101,6 +103,7 @@ public class Game extends Application {
 
         //Displaying the contents of the stage
         stage.show();
+        MATCH_STARTED = true;
     }
 
     private void moveStrikerOnKeyPress(Scene scene, final Rectangle myStriker) {
@@ -121,7 +124,6 @@ public class Game extends Application {
             }
         });
     }
-
 
     public static void main(String[] args) {
         launch(args);

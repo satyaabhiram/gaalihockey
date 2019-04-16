@@ -1,6 +1,7 @@
 package com.gaalihockey.client;
 
 import java.io.*;
+import java.util.concurrent.TimeUnit;
 
 import com.gaalihockey.message.MessageType;
 import com.gaalihockey.message.MessageUtil;
@@ -20,8 +21,10 @@ public class Sender implements Runnable {
         // Get input from swing and relay to server
     	while(true) {
     		try {
-                wait(1);
-                this.sendStrikerPosition();
+                TimeUnit.MILLISECONDS.sleep(1000);
+                if (Game.MATCH_STARTED) {
+                    this.sendStrikerPosition();
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -29,7 +32,7 @@ public class Sender implements Runnable {
     }
     private void sendStrikerPosition() {
     	Rectangle striker;
-    	if(Game.isPlayer1) {
+    	if (Game.isPlayer1) {
     		striker = Game.player1Striker;
     	}
     	else {

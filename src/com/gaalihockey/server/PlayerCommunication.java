@@ -38,7 +38,7 @@ public class PlayerCommunication {
         Thread st = new Thread(this.sender);
         st.start();
         try {
-        	
+
             st.join();
             System.out.println("in sender thread");
             //Placing join rt here
