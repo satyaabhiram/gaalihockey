@@ -22,11 +22,13 @@ public class ClientHandler implements Runnable {
 
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
+        System.out.println("inside constructor");
     }
 
     @Override
     public void run() {
         try {
+        	System.out.println("Thread started");
             this.out = new ObjectOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
             PlayerCommunication.sendSearchingMessage(this.out);
 

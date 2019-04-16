@@ -15,7 +15,11 @@ public class Server {
 
         try {
             while (true) {
-                new Thread(new ClientHandler(serverSocket.accept())).start();
+            	System.out.println("Server socket");
+            	ClientHandler ch = new ClientHandler(serverSocket.accept());
+                //new Thread(new ClientHandler(serverSocket.accept())).start();
+            	Thread chThread = new Thread(ch);
+            	chThread.start();
             }
         } catch (IOException e) {
             throw new RuntimeException("Error accepting client connection", e);

@@ -1,6 +1,8 @@
 package com.gaalihockey.client;
 
 import java.net.*;
+
+
 import java.io.*;
 
 public class Client {
@@ -23,28 +25,33 @@ public class Client {
     }
 
     public void startGame() {
-        /*new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Application.launch(Game.class);
-            }
-        }).start();*/
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Application.launch(Game.class);
+//            }
+//        }).start();
         this.sender = new Sender(this.out);
+        this.receiver = new Receiver(this.in);
         Thread senderThread = new Thread(this.sender);
+        Thread receiverThread = new Thread(this.receiver);
         senderThread.start();
+        receiverThread.start();
+        
         try {
             senderThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.receiver = new Receiver(this.in);
-        Thread receiverThread = new Thread(this.receiver);
-        receiverThread.start();
-        try {
             receiverThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        this.receiver = new Receiver(this.in);
+        //Thread receiverThread = new Thread(this.receiver);
+//        receiverThread.start();
+//        try {
+//            receiverThread.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void stopConnection() {

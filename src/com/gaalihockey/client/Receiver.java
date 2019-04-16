@@ -16,6 +16,7 @@ public class Receiver implements Runnable {
 
     @Override
     public void run() {
+    	System.out.println("Started Receiver thread");
         Message inputMessage;
         try {
             while (!(inputMessage = (Message) this.in.readObject()).equals(null)) {
