@@ -73,6 +73,11 @@ public class Receiver implements Runnable {
                         break;
 
                     case SCORE:
+                    	if(Game.MATCH_STARTED) {
+                    		String player1Score=inputMessage.getValue1();
+                            String player2Score = inputMessage.getValue2();
+                    		Game.text.setText(player1Score+" : "+player2Score);
+                        }
                         break;
                         
                     case STRIKER:

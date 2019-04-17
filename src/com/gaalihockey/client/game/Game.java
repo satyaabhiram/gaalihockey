@@ -8,6 +8,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import static javafx.scene.input.KeyCode.*;
@@ -17,12 +19,12 @@ public class Game extends Application {
     private final double strikerMovement=30;
     private double arenaTopY;
     private double arenaBottomY;
-    private double scoreSize=50.0f;
 
     public static Rectangle player1Striker = null;
     public static Rectangle player2Striker = null;
     public static Circle puck = null;
-
+    //public static  Label variableLabel;
+    public static Text text;
     public static boolean isPlayer1 = true;
 
     public static boolean MATCH_STARTED = false;
@@ -64,29 +66,19 @@ public class Game extends Application {
         puck.setRadius(15.0f);
         puck.setFill(Color.WHITE);
 
-        //Rectangle for Player 1 Score
-        Rectangle player1Score = new Rectangle();
-        player1Score.setX(arena.getX()+arena.getWidth()/2 - 100.0f);
-        player1Score.setY(arena.getY());
-        player1Score.setHeight(scoreSize);
-        player1Score.setWidth(scoreSize);
-        player1Score.setFill(Color.GRAY);
-
-        //Rectangle for Player 2 Score
-        Rectangle player2Score = new Rectangle();
-        player2Score.setX(arena.getX()+arena.getWidth()/2 + 50.0f);
-        player2Score.setY(arena.getY());
-        player2Score.setHeight(scoreSize);
-        player2Score.setWidth(scoreSize);
-        player2Score.setFill(Color.GRAY);
+        text = new Text();
+        text.setText("0:0");
+        text.setX(460.0);
+        text.setY(40.0);
+        text.setFont(Font.font(40));
+        text.setFill(Color.GRAY);
 
         //Creating a Group object
         Group root = new Group(arena);
         root.getChildren().add(player1Striker);
         root.getChildren().add(player2Striker);
         root.getChildren().add(puck);
-        root.getChildren().add(player1Score);
-        root.getChildren().add(player2Score);
+        root.getChildren().add(text);
         //Creating a scene object
         Scene scene = new Scene(root, 1000, 500);
 
