@@ -50,7 +50,7 @@ public class Game {
     }
 
     public void initializePuckVelocity() {
-    	this.puck.setVelocityXY(7.0,4.0);
+    	this.puck.setVelocityXY(3.0,1.0);
 //    	this.puck.setVelocityX(7.0);
 //    	this.puck.setVelocityY(4.0);
     	//this.puck.setVelocityX((int) (Math.random() * 1000));
@@ -109,6 +109,7 @@ public class Game {
     private void checkAndHandleStrikerHit() {
         if ((this.xPuckDistance(this.player1) <= (this.player1.WIDTH_X/2 + this.puck.RADIUS))
                 && (this.yPuckDistance(this.player1) <= (this.player1.WIDTH_Y/2 + this.puck.RADIUS))) {
+            System.out.println("Collision with striker 1");
             if ((this.puck.getY()>=this.player1.getLowerY()) && (this.puck.getY()<=this.player1.getHigherY())) {
                 if ((this.puck.getX()>this.player1.getHigherX()) && (this.puck.getVelocityX()<0))
                     this.reversePuckVelocityX();
@@ -122,6 +123,7 @@ public class Game {
             }
         } else if ((this.xPuckDistance(this.player2) <= (this.player2.WIDTH_X/2 + this.puck.RADIUS))
                 && (this.yPuckDistance(this.player2) <= (this.player2.WIDTH_Y/2 + this.puck.RADIUS))) {
+            System.out.println("Collision with striker 2");
             if ((this.puck.getY()>=this.player2.getLowerY()) && (this.puck.getY()<=this.player2.getHigherY())) {
                 if ((this.puck.getX()<this.player2.getLowerX()) && (this.puck.getVelocityX()>0))
                     this.reversePuckVelocityX();

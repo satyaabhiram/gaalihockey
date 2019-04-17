@@ -26,7 +26,7 @@ public class Sender implements Runnable {
             // Write output when Game variables change
             try {
             	//System.out.println("in Sender Server");
-                TimeUnit.MILLISECONDS.sleep(100);
+                TimeUnit.MILLISECONDS.sleep(10);
                 this.sendPuckPosition();
                 this.sendOpponentPosition();
                 this.sendScore();

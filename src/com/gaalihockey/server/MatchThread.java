@@ -61,7 +61,7 @@ public class MatchThread implements Runnable {
         // Watch for wall collisions in loop
         this.startWallCollisionWatcher();
         // Watch for striker hits in loop
-        //this.startStrikerHitWatcher();
+        this.startStrikerHitWatcher();
     }
 
     private void startPuckPositionUpdater() {

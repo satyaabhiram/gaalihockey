@@ -52,7 +52,6 @@ public class Receiver implements Runnable {
                     	//System.out.println("received puck position");
                         double xCentre=Double.parseDouble(inputMessage.getValue1());
                         double yCentre=Double.parseDouble(inputMessage.getValue2());
-                        System.out.println("Set: "+ xCentre+" "+yCentre);
                         if(Game.MATCH_STARTED) {
                             Game.puck.setCenterX(xCentre);
                             Game.puck.setCenterY(yCentre);

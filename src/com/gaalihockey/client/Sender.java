@@ -23,7 +23,6 @@ public class Sender implements Runnable {
     		try {
                 TimeUnit.MILLISECONDS.sleep(10);
                 if (Game.MATCH_STARTED) {
-                    System.out.println("Get: " + Game.puck.getCenterX() + " " + Game.puck.getCenterY());
                     this.sendStrikerPosition();
                 }
             } catch (InterruptedException e) {
