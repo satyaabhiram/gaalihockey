@@ -1,6 +1,5 @@
 package com.gaalihockey.server;
 
-import com.gaalihockey.message.Message;
 import com.gaalihockey.message.MessageType;
 import com.gaalihockey.message.MessageUtil;
 import com.gaalihockey.server.game.Game;
