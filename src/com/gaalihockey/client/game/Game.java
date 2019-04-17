@@ -41,20 +41,20 @@ public class Game extends Application {
 
         //Rectangle Object for Player 1 Puck
         player1Striker = new Rectangle();
-        player1Striker.setX(30.0f);
-        player1Striker.setY(250.0f);
+        player1Striker.setX(25.0f);
+        player1Striker.setY(210.0f);
         player1Striker.setWidth(10.0f);
-        player1Striker.setHeight(70.0f);
+        player1Striker.setHeight(80.0f);
         player1Striker.setFill(Color.WHITE);
 
         arenaBottomY-=player1Striker.getHeight();
 
         //Rectangle Object for Player 2 Puck
         player2Striker = new Rectangle();
-        player2Striker.setX(970.0f);
-        player2Striker.setY(250.0f);
+        player2Striker.setX(965.0f);
+        player2Striker.setY(210.0f);
         player2Striker.setWidth(10.0f);
-        player2Striker.setHeight(70.0f);
+        player2Striker.setHeight(80.0f);
         player2Striker.setFill(Color.WHITE);
 
         //Circle Object for puck

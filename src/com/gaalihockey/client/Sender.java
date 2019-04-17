@@ -38,6 +38,6 @@ public class Sender implements Runnable {
     	else {
     		striker = Game.player2Striker;
     	}
-    	MessageUtil.sendMessage(this.out, MessageType.STRIKER, Double.toString(striker.getX()), Double.toString(striker.getY()));
+    	MessageUtil.sendMessage(this.out, MessageType.STRIKER, Double.toString(striker.getX()+striker.getWidth()/2), Double.toString(striker.getY()+striker.getHeight()/2));
     }
 }

@@ -37,7 +37,7 @@ public class Game {
     }
 
     public void resetPuckPosition() {
-    	this.puck.setXY(500.0,500.0);
+    	this.puck.setXY(500.0,250.0);
 //        this.puck.setX(500.0f);
 //        this.puck.setY(250.0f);
     }
@@ -50,7 +50,7 @@ public class Game {
     }
 
     public void initializePuckVelocity() {
-    	this.puck.setVelocityXY(3.0,1.0);
+    	this.puck.setVelocityXY(4.0,1.0);
 //    	this.puck.setVelocityX(7.0);
 //    	this.puck.setVelocityY(4.0);
     	//this.puck.setVelocityX((int) (Math.random() * 1000));

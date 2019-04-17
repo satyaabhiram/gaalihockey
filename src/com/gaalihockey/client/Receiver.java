@@ -63,11 +63,11 @@ public class Receiver implements Runnable {
                         double yPos=Double.parseDouble(inputMessage.getValue2());
                         if(Game.MATCH_STARTED) {
                             if (Game.isPlayer1) {
-                                Game.player2Striker.setX(xPos);
-                                Game.player2Striker.setY(yPos);
+                                Game.player2Striker.setX(xPos-Game.player2Striker.getWidth()/2);
+                                Game.player2Striker.setY(yPos-Game.player2Striker.getHeight()/2);
                             } else {
-                                Game.player1Striker.setX(xPos);
-                                Game.player1Striker.setY(yPos);
+                                Game.player1Striker.setX(xPos-Game.player1Striker.getWidth()/2);
+                                Game.player1Striker.setY(yPos-Game.player1Striker.getHeight()/2);
                             }
                         }
                         break;

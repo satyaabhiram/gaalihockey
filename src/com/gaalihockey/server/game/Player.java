@@ -6,7 +6,7 @@ public class Player {
     double x;
     double y;
 
-    final double WIDTH_X = 20;
+    final double WIDTH_X = 10;
     final double WIDTH_Y = 80;
 
     Player opponent;
