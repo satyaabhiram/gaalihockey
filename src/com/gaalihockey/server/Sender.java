@@ -41,8 +41,8 @@ public class Sender implements Runnable {
     }
 
     private void sendPuckPosition() {
-    	//System.out.println("In Sender puck position"+this.game.getPuck().getX());
-        MessageUtil.sendMessage(this.out, MessageType.PUCK, Double.toString(this.game.getPuck().getX()), Double.toString(this.game.getPuck().getY()));
+    	double[] temp = this.game.getPuck().getXY();
+        MessageUtil.sendMessage(this.out, MessageType.PUCK, Double.toString(temp[0]), Double.toString(temp[1]));
     }
 
     private void sendOpponentPosition() {

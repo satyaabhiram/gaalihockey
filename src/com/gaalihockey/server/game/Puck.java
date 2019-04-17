@@ -1,55 +1,175 @@
 package com.gaalihockey.server.game;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Puck {
-    double x, y, velocityX, velocityY;
+    private double x, y, velocityX, velocityY;
+    static final Lock puckLock = new ReentrantLock();
 
     public final double RADIUS = 20;
+    
+    public void setVelocityXY(double x,double y) {
+    	puckLock.lock();
+    	try {
+    		this.velocityX = x;
+    		this.velocityY = y;
+    	}
+    	finally {
+			puckLock.unlock();
+		}
+    }
+    public void updateXY() {
+        puckLock.lock();
+        try {
+        	this.x = this.x+this.getVelocityX();
+        	this.y = this.y+this.getVelocityY();
+        }
+        finally {
+			puckLock.unlock();
+		}
+    }
+    
+    public void setXY(double x, double y) {
+    	puckLock.lock();
+    	try {
+    		this.x = x;
+    		this.y = y;
+    	}
+    	finally {
+			puckLock.unlock();
+		}
+    }
+    
+    public double[] getXY() {
+    	puckLock.lock();
+    	try {
+    		double[] temp = {this.x,this.y};
+    		return temp;
+    	}
+    	finally {
+			puckLock.unlock();
+		}
+    }
 
     public double getX() {
-        return this.x;
+    	puckLock.lock();
+    	try {
+    		return this.x;
+    	}
+    	finally {
+    		puckLock.unlock();
+    	}
+        
     }
 
     public void setX(double x) {
-        this.x = x;
+    	puckLock.lock();
+    	try {
+    		this.x = x;
+    	}
+        finally {
+			puckLock.unlock();
+		}
     }
 
     public double getY() {
-        return this.y;
+    	puckLock.lock();
+    	try {
+    		return this.y;
+    	}
+        finally {
+			puckLock.unlock();
+		}
     }
 
     public void setY(double y) {
-        this.y = y;
+    	puckLock.lock();
+    	try {
+    		this.y = y;
+    	}
+        finally {
+			puckLock.unlock();
+		}
     }
 
     public double getLowerX() {
-        return this.x - this.RADIUS;
+    	puckLock.lock();
+    	try {
+    		return this.x - this.RADIUS;
+    	}
+        finally {
+			puckLock.unlock();
+		}
     }
 
     public double getHigherX() {
-        return this.x + this.RADIUS;
+    	puckLock.lock();
+    	try {
+    		return this.x + this.RADIUS;
+    	}
+        finally {
+			puckLock.unlock();
+		}
     }
 
     public double getLowerY() {
-        return this.y - this.RADIUS;
+    	puckLock.lock();
+    	try {
+    		return this.y - this.RADIUS;
+    	}
+        finally {
+			puckLock.unlock();
+		}    
     }
 
     public double getHigherY() {
-        return this.y + this.RADIUS;
+    	puckLock.lock();
+    	try {
+    		return this.y + this.RADIUS;
+    	}
+        finally {
+			puckLock.unlock();
+		} 
     }
 
     public double getVelocityX() {
-        return this.velocityX;
+    	puckLock.lock();
+    	try {
+    		return this.velocityX;
+    	}
+        finally {
+			puckLock.unlock();
+		}       
     }
 
     public void setVelocityX(double velocityX) {
-        this.velocityX = velocityX;
+    	puckLock.lock();
+    	try {
+    		this.velocityX = velocityX;
+    	}
+        finally {
+			puckLock.unlock();
+		}  
     }
 
     public double getVelocityY() {
-        return this.velocityY;
+    	puckLock.lock();
+    	try {
+    		return this.velocityY;
+    	}
+        finally {
+			puckLock.unlock();
+		}        
     }
 
     public void setVelocityY(double velocityY) {
-        this.velocityY = velocityY;
+    	puckLock.lock();
+    	try {
+    		this.velocityY = velocityY;
+    	}
+        finally {
+			puckLock.unlock();
+		}
     }
 }

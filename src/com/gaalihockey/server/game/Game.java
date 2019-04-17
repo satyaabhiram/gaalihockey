@@ -1,8 +1,10 @@
 package com.gaalihockey.server.game;
 
+
 public class Game {
     private Puck puck;
     private Player player1, player2;
+    
 
     private final double boardLowerX = 0;
     private final double boardHigherX = 1000;
@@ -35,8 +37,9 @@ public class Game {
     }
 
     public void resetPuckPosition() {
-        this.puck.setX(500.0f);
-        this.puck.setY(250.0f);
+    	this.puck.setXY(500.0,500.0);
+//        this.puck.setX(500.0f);
+//        this.puck.setY(250.0f);
     }
 
     public void resetPlayerPositions() {
@@ -45,8 +48,9 @@ public class Game {
     }
 
     public void initializePuckVelocity() {
-    	this.puck.setVelocityX(7.0);
-    	this.puck.setVelocityY(4.0);
+    	this.puck.setVelocityXY(7.0,4.0);
+//    	this.puck.setVelocityX(7.0);
+//    	this.puck.setVelocityY(4.0);
     	//this.puck.setVelocityX((int) (Math.random() * 1000));
         //this.puck.setVelocityY((int) (Math.random() * 1000));
         //System.out.println();
@@ -60,8 +64,9 @@ public class Game {
     public void updatePuckPosition() {
 //    	System.out.println(this.puck.getX()+"X position");
 //    	System.out.println(this.puck.getY()+"Y position");
-        this.puck.setX(this.puck.getX() + this.puck.getVelocityX());
-        this.puck.setY(this.puck.getY() + this.puck.getVelocityY());
+    	this.puck.updateXY();
+//        this.puck.setX(this.puck.getX() + this.puck.getVelocityX());
+//        this.puck.setY(this.puck.getY() + this.puck.getVelocityY());
     }
 
     public void watchForWallCollisions() {
@@ -84,7 +89,8 @@ public class Game {
     }
 
     private void checkYWallCollision() {
-        if ((this.puck.getY()<=this.boardLowerY) || (this.puck.getY()>=this.boardHigherY)) {
+    	double y = this.puck.getY();
+        if ((y<=this.boardLowerY) || (y>=this.boardHigherY)) {
             this.reversePuckVelocityY();
         }
     }
