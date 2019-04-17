@@ -20,7 +20,7 @@ public class Receiver implements Runnable {
         Message inputMessage;
         try {
             while (!(inputMessage = (Message) this.in.readObject()).equals(null)) {
-                System.out.println("Message from server!\nType: " + inputMessage.getMessageType() + "\nBody: " + inputMessage.getValue1() + ", " + inputMessage.getValue2());
+                // System.out.println("Message from server!\nType: " + inputMessage.getMessageType() + "\nBody: " + inputMessage.getValue1() + ", " + inputMessage.getValue2());
                 // Handle input from server in swing
 
                 MessageType mType=inputMessage.getMessageType();
@@ -33,7 +33,10 @@ public class Receiver implements Runnable {
                     	GameController gc = new GameController();
                     	Thread gcThread = new Thread(gc);
                     	gcThread.start();
-                        //GameController.startGame();
+                        break;
+
+                    case STOP:
+                        GameController.stopGame();
                         break;
 
                     case INITIALIZE:
@@ -49,20 +52,24 @@ public class Receiver implements Runnable {
                     	//System.out.println("received puck position");
                         double xCentre=Double.parseDouble(inputMessage.getValue1());
                         double yCentre=Double.parseDouble(inputMessage.getValue2());
-//                        System.out.println(xCentre+" "+yCentre);
-                        Game.puck.setCenterX(xCentre);
-                        Game.puck.setCenterY(yCentre);
+                        System.out.println("Set: "+ xCentre+" "+yCentre);
+                        if(Game.MATCH_STARTED) {
+                            Game.puck.setCenterX(xCentre);
+                            Game.puck.setCenterY(yCentre);
+                        }
                         break;
 
                     case OPPONENT:
                         double xPos=Double.parseDouble(inputMessage.getValue1());
                         double yPos=Double.parseDouble(inputMessage.getValue2());
-                        if(Game.isPlayer1==true){
-                            Game.player2Striker.setX(xPos);
-                            Game.player2Striker.setY(yPos);
-                        }else{
-                            Game.player1Striker.setX(xPos);
-                            Game.player1Striker.setY(yPos);
+                        if(Game.MATCH_STARTED) {
+                            if (Game.isPlayer1) {
+                                Game.player2Striker.setX(xPos);
+                                Game.player2Striker.setY(yPos);
+                            } else {
+                                Game.player1Striker.setX(xPos);
+                                Game.player1Striker.setY(yPos);
+                            }
                         }
                         break;
 

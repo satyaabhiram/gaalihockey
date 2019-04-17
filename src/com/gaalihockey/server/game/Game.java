@@ -41,6 +41,8 @@ public class Game {
 
     public void resetPlayerPositions() {
         this.player1.setX(0);
+        this.player1.setY(0);
+        this.player2.setX(0);
         this.player2.setY(0);
     }
 
@@ -74,17 +76,17 @@ public class Game {
     }
 
     private void checkXWallCollision() {
-        if (this.puck.getX()<=this.boardLowerX) {
+        if (this.puck.getX()<=this.boardLowerX && this.puck.getVelocityX()<0) {
             this.reversePuckVelocityX();
             this.updateScore(this.player1.getScore(), this.player2.getScore()+1);
-        } else if (this.puck.getX()>=this.boardHigherX) {
+        } else if (this.puck.getX()>=this.boardHigherX && this.puck.getVelocityX()>0) {
             this.reversePuckVelocityX();
             this.updateScore(this.player1.getScore()+1, this.player2.getScore());
         }
     }
 
     private void checkYWallCollision() {
-        if ((this.puck.getY()<=this.boardLowerY) || (this.puck.getY()>=this.boardHigherY)) {
+        if (((this.puck.getY()<=this.boardLowerY) && (this.puck.getVelocityY()<0)) || ((this.puck.getY()>=this.boardHigherY) && (this.puck.getVelocityY()>0))) {
             this.reversePuckVelocityY();
         }
     }

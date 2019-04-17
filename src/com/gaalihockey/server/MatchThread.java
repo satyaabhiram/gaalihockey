@@ -1,7 +1,6 @@
 package com.gaalihockey.server;
 
 import com.gaalihockey.server.game.Game;
-import com.gaalihockey.server.game.Puck;
 
 import java.io.*;
 import java.util.*;
@@ -62,7 +61,7 @@ public class MatchThread implements Runnable {
         // Watch for wall collisions in loop
         this.startWallCollisionWatcher();
         // Watch for striker hits in loop
-        this.startStrikerHitWatcher();
+        //this.startStrikerHitWatcher();
     }
 
     private void startPuckPositionUpdater() {
@@ -74,9 +73,9 @@ public class MatchThread implements Runnable {
         };
 
         Timer timer = new Timer();
-        long delay = 0L;
+        long delay = 1L;
         //long period = (long) 1000;
-        long period = (long) 33;
+        long period = (long) 10;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
 
@@ -89,9 +88,9 @@ public class MatchThread implements Runnable {
         };
 
         Timer timer = new Timer();
-        long delay = 1L;
+        long delay = 2L;
         //long period = (long) 1000;
-        long period = (long) 33;
+        long period = (long) 10;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
 
@@ -104,8 +103,8 @@ public class MatchThread implements Runnable {
         };
 
         Timer timer = new Timer();
-        long delay = 2L;
-        long period = (long) 1000;
+        long delay = 3L;
+        long period = (long) 10;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
 }

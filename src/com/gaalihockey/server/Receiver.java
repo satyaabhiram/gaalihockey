@@ -27,7 +27,7 @@ public class Receiver implements Runnable {
 			case STRIKER:
 				this.player.setX(Double.parseDouble(inputMessage.getValue1()));
 				this.player.setY(Double.parseDouble(inputMessage.getValue2()));
-				System.out.println(this.player.getX());
+				System.out.println(this.player.getY());
 				break;
 			default:
 				break;

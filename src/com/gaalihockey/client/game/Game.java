@@ -103,6 +103,7 @@ public class Game extends Application {
 
         //Displaying the contents of the stage
         stage.show();
+
         MATCH_STARTED = true;
     }
 
