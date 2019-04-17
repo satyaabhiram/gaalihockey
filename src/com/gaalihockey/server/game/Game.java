@@ -118,7 +118,8 @@ public class Game {
                         || ((this.puck.getY()>this.player1.getHigherY()) && (this.puck.getVelocityY()<0)))
                     this.reversePuckVelocityY();
             } else {
-                this.reversePuckVelocityX();
+                if(this.puck.getVelocityX()<0)
+                    this.reversePuckVelocityX();
                 this.reversePuckVelocityY();
             }
         } else if ((this.xPuckDistance(this.player2) <= (this.player2.WIDTH_X/2 + this.puck.RADIUS))
@@ -132,7 +133,8 @@ public class Game {
                         || ((this.puck.getY()>this.player2.getHigherY()) && (this.puck.getVelocityY()<0)))
                     this.reversePuckVelocityY();
             } else {
-                this.reversePuckVelocityX();
+                if(this.puck.getVelocityX()>0)
+                    this.reversePuckVelocityX();
                 this.reversePuckVelocityY();
             }
         }
