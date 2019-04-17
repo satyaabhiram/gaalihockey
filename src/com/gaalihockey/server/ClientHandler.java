@@ -1,7 +1,7 @@
 package com.gaalihockey.server;
 
-import com.gaalihockey.message.Message;
-import com.gaalihockey.message.MessageType;
+//import com.gaalihockey.message.Message;
+//import com.gaalihockey.message.MessageType;
 
 import java.net.*;
 import java.io.*;
@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class ClientHandler implements Runnable {
     private Socket clientSocket;
 
-    private Receiver receiver;
-    private Sender sender;
+//    private Receiver receiver;
+//    private Sender sender;
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
@@ -22,13 +22,12 @@ public class ClientHandler implements Runnable {
 
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
-        System.out.println("inside constructor");
     }
 
     @Override
     public void run() {
         try {
-        	System.out.println("Thread started");
+        	//System.out.println("Client Handler Thread started");
             this.out = new ObjectOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
             PlayerCommunication.sendSearchingMessage(this.out);
 

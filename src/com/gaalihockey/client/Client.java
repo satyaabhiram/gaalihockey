@@ -44,7 +44,7 @@ public class Client {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.receiver = new Receiver(this.in);
+        //this.receiver = new Receiver(this.in);
         //Thread receiverThread = new Thread(this.receiver);
 //        receiverThread.start();
 //        try {

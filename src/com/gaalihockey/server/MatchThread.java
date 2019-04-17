@@ -1,6 +1,7 @@
 package com.gaalihockey.server;
 
 import com.gaalihockey.server.game.Game;
+import com.gaalihockey.server.game.Puck;
 
 import java.io.*;
 import java.util.*;
@@ -43,16 +44,16 @@ public class MatchThread implements Runnable {
         // Initialize match
         this.playerCommunication1.sendMatchStartedMessage();
         this.playerCommunication2.sendMatchStartedMessage();
-
+        System.out.println("sending match thread started message");
         this.playerCommunication1.startCommunication();
         this.playerCommunication2.startCommunication();
-
+        System.out.println("matchThread communication started");
         // Reset score
         this.game.resetScore();
         // Reset puck position
         this.game.resetPuckPosition();
         // Reset strikers
-        this.game.resetPlayerPositions();
+        //this.game.resetPlayerPositions();
         // Initialize random velocity to puck
         this.game.initializePuckVelocity();
 
@@ -74,7 +75,8 @@ public class MatchThread implements Runnable {
 
         Timer timer = new Timer();
         long delay = 0L;
-        long period = (long) 1000;
+        //long period = (long) 1000;
+        long period = (long) 33;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
 
@@ -88,7 +90,8 @@ public class MatchThread implements Runnable {
 
         Timer timer = new Timer();
         long delay = 1L;
-        long period = (long) 1000;
+        //long period = (long) 1000;
+        long period = (long) 33;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
 

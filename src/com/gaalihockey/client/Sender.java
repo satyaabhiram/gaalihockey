@@ -21,7 +21,7 @@ public class Sender implements Runnable {
         // Get input from swing and relay to server
     	while(true) {
     		try {
-                TimeUnit.MILLISECONDS.sleep(1000);
+                TimeUnit.MILLISECONDS.sleep(500);
                 if (Game.MATCH_STARTED) {
                     this.sendStrikerPosition();
                 }
@@ -38,6 +38,7 @@ public class Sender implements Runnable {
     	else {
     		striker = Game.player2Striker;
     	}
+    	System.out.println("this is client side sender"+striker.getX());
     	MessageUtil.sendMessage(this.out, MessageType.STRIKER, Double.toString(striker.getX()), Double.toString(striker.getY()));
     }
 }

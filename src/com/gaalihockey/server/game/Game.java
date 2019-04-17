@@ -5,9 +5,9 @@ public class Game {
     private Player player1, player2;
 
     private final double boardLowerX = 0;
-    private final double boardHigherX = 3200;
+    private final double boardHigherX = 1000;
     private final double boardLowerY = 0;
-    private final double boardHigherY = 1600;
+    private final double boardHigherY = 500;
 
     public Puck getPuck() {
         return puck;
@@ -35,8 +35,8 @@ public class Game {
     }
 
     public void resetPuckPosition() {
-        this.puck.setX(0);
-        this.puck.setY(0);
+        this.puck.setX(500.0f);
+        this.puck.setY(250.0f);
     }
 
     public void resetPlayerPositions() {
@@ -45,8 +45,11 @@ public class Game {
     }
 
     public void initializePuckVelocity() {
-        this.puck.setVelocityX((int) (Math.random() * 1000));
-        this.puck.setVelocityY((int) (Math.random() * 1000));
+    	this.puck.setVelocityX(7.0);
+    	this.puck.setVelocityY(4.0);
+    	//this.puck.setVelocityX((int) (Math.random() * 1000));
+        //this.puck.setVelocityY((int) (Math.random() * 1000));
+        //System.out.println();
     }
 
     public void updateScore(int player1score, int player2score) {
@@ -55,6 +58,8 @@ public class Game {
     }
 
     public void updatePuckPosition() {
+//    	System.out.println(this.puck.getX()+"X position");
+//    	System.out.println(this.puck.getY()+"Y position");
         this.puck.setX(this.puck.getX() + this.puck.getVelocityX());
         this.puck.setY(this.puck.getY() + this.puck.getVelocityY());
     }

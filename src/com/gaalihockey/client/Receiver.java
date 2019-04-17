@@ -30,7 +30,10 @@ public class Receiver implements Runnable {
                         break;
 
                     case START:
-                        GameController.startGame();
+                    	GameController gc = new GameController();
+                    	Thread gcThread = new Thread(gc);
+                    	gcThread.start();
+                        //GameController.startGame();
                         break;
 
                     case INITIALIZE:
@@ -43,8 +46,10 @@ public class Receiver implements Runnable {
                         break;
 
                     case PUCK:
+                    	//System.out.println("received puck position");
                         double xCentre=Double.parseDouble(inputMessage.getValue1());
                         double yCentre=Double.parseDouble(inputMessage.getValue2());
+//                        System.out.println(xCentre+" "+yCentre);
                         Game.puck.setCenterX(xCentre);
                         Game.puck.setCenterY(yCentre);
                         break;

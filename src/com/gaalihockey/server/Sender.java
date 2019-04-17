@@ -25,7 +25,8 @@ public class Sender implements Runnable {
         while (true) {
             // Write output when Game variables change
             try {
-                TimeUnit.MILLISECONDS.sleep(1000);
+            	//System.out.println("in Sender Server");
+                TimeUnit.MILLISECONDS.sleep(500);
                 this.sendPuckPosition();
                 this.sendOpponentPosition();
                 this.sendScore();
@@ -40,6 +41,7 @@ public class Sender implements Runnable {
     }
 
     private void sendPuckPosition() {
+    	//System.out.println("In Sender puck position"+this.game.getPuck().getX());
         MessageUtil.sendMessage(this.out, MessageType.PUCK, Double.toString(this.game.getPuck().getX()), Double.toString(this.game.getPuck().getY()));
     }
 
