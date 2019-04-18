@@ -76,8 +76,8 @@ public class Game extends Application {
 
         message = new Text();
         message.setText("");
-        message.setX(400.0);
-        message.setY(200.0);
+        message.setX(350.0);
+        message.setY(250.0);
         message.setFont(Font.font(60));
         message.setFill(Color.GRAY);
 

@@ -81,70 +81,89 @@ public class Game {
     }
 
     private void checkXWallCollision() {
-        if (this.puck.getX()<=this.boardLowerX && this.puck.getVelocityX()<0) {
-            this.reversePuckVelocityX();
+    	double[] posXY = this.puck.getXY();
+    	double[] velXY = this.puck.getXYVelocity();
+    	
+        if (posXY[0]<=this.boardLowerX && velXY[0]<0) {
+        	this.puck.setVelocityXY(-velXY[0],velXY[1]);
             this.updateScore(this.player1.getScore(), this.player2.getScore()+1);
-        } else if (this.puck.getX()>=this.boardHigherX && this.puck.getVelocityX()>0) {
-            this.reversePuckVelocityX();
+        } else if (posXY[0]>=this.boardHigherX && velXY[0]>0) {
+        	this.puck.setVelocityXY(-velXY[0],velXY[1]);
             this.updateScore(this.player1.getScore()+1, this.player2.getScore());
         }
     }
 
     private void checkYWallCollision() {
-        double y = this.puck.getY();
-        double yVelocity = this.puck.getVelocityY();
-        if (((y<=this.boardLowerY) && (yVelocity<0)) || ((y>=this.boardHigherY) && (yVelocity>0))) {
-            this.reversePuckVelocityY();
+    	double[] pos = this.puck.getXY();
+        //double y = this.puck.getY();
+    	double[] vel = this.puck.getXYVelocity();
+        double yVelocity = vel[1];
+        if (((pos[1]<=this.boardLowerY) && (yVelocity<0)) || ((pos[1]>=this.boardHigherY) && (yVelocity>0))) {
+        	this.puck.setVelocityXY(vel[0],-vel[1]);
         }
     }
 
-    private void reversePuckVelocityX() {
-        this.puck.setVelocityX(-this.puck.getVelocityX());
-    }
+//    private void reversePuckVelocityX() {
+//        this.puck.setVelocityX(-this.puck.getVelocityX());
+//    }
 
-    private void reversePuckVelocityY() {
-        this.puck.setVelocityY(-this.puck.getVelocityY());
-    }
+//    private void reversePuckVelocityY() {
+//        this.puck.setVelocityY(-this.puck.getVelocityY());
+//    }
 
     private void checkAndHandleStrikerHit() {
-        if ((this.xPuckDistance(this.player1) <= (this.player1.WIDTH_X/2 + this.puck.RADIUS))
-                && (this.yPuckDistance(this.player1) <= (this.player1.WIDTH_Y/2 + this.puck.RADIUS))) {
-            System.out.println("Collision with striker 1");
-            if ((this.puck.getY()>=this.player1.getLowerY()) && (this.puck.getY()<=this.player1.getHigherY())) {
-                if ((this.puck.getX()>this.player1.getHigherX()) && (this.puck.getVelocityX()<0))
-                    this.reversePuckVelocityX();
-            } else if ((this.puck.getX()>=this.player1.getLowerX()) && (this.puck.getX()<=this.player1.getHigherX())) {
-                if (((this.puck.getY()<this.player1.getLowerY()) && (this.puck.getVelocityY()>0))
-                        || ((this.puck.getY()>this.player1.getHigherY()) && (this.puck.getVelocityY()<0)))
-                    this.reversePuckVelocityY();
+    	
+    	double[] posXY = this.puck.getXY();
+    	double[] velXY = this.puck.getXYVelocity();
+    	
+    	double xpuckDistance1 = Math.abs(posXY[0] - this.player1.getX());
+    	double xpuckDistance2 = Math.abs(posXY[0] - this.player2.getX());
+    	double ypuckDistance1 = Math.abs(posXY[1] - this.player1.getY());
+    	double ypuckDistance2 = Math.abs(posXY[1] - this.player2.getY());
+    	
+    	double player1YL = this.player1.getLowerY();
+    	double player1YH = this.player1.getHigherY();
+    	double player2YL = this.player2.getLowerY();
+    	double player2YH = this.player2.getHigherY();
+    	
+    	
+        if ((xpuckDistance1 <= (this.player1.WIDTH_X/2 + this.puck.RADIUS))
+                && (ypuckDistance1 <= (this.player1.WIDTH_Y/2 + this.puck.RADIUS))) {
+            if ((posXY[1]>=player1YL) && (posXY[1]<=player1YH)) {
+                if ((posXY[0]>this.player1.getHigherX()) && (velXY[0]<0))
+                	this.puck.setVelocityXY(-velXY[0],velXY[1]);
+                    //this.reversePuckVelocityX();
+            } else if ((posXY[0]>=this.player1.getLowerX()) && (posXY[0]<=this.player1.getHigherX())) {
+                if (((posXY[1]<player1YL) && (velXY[1]>0))
+                        || ((posXY[1]>player1YH) && (velXY[1]<0)))
+                	this.puck.setVelocityXY(velXY[0],-velXY[1]);
             } else {
-                if(this.puck.getVelocityX()<0)
-                    this.reversePuckVelocityX();
-                this.reversePuckVelocityY();
+                if(velXY[0]<0)
+                	this.puck.setVelocityXY(-velXY[0],velXY[1]);
+                this.puck.setVelocityXY(velXY[0],-velXY[1]);
             }
-        } else if ((this.xPuckDistance(this.player2) <= (this.player2.WIDTH_X/2 + this.puck.RADIUS))
-                && (this.yPuckDistance(this.player2) <= (this.player2.WIDTH_Y/2 + this.puck.RADIUS))) {
-            System.out.println("Collision with striker 2");
-            if ((this.puck.getY()>=this.player2.getLowerY()) && (this.puck.getY()<=this.player2.getHigherY())) {
-                if ((this.puck.getX()<this.player2.getLowerX()) && (this.puck.getVelocityX()>0))
-                    this.reversePuckVelocityX();
-            } else if ((this.puck.getX()>=this.player2.getLowerX()) && (this.puck.getX()<=this.player2.getHigherX())) {
-                if (((this.puck.getY()<this.player2.getLowerY()) && (this.puck.getVelocityY()>0))
-                        || ((this.puck.getY()>this.player2.getHigherY()) && (this.puck.getVelocityY()<0)))
-                    this.reversePuckVelocityY();
+        } else if ((xpuckDistance2 <= (this.player2.WIDTH_X/2 + this.puck.RADIUS))
+                && (ypuckDistance2<= (this.player2.WIDTH_Y/2 + this.puck.RADIUS))) {
+            if ((posXY[1]>=player2YL) && (posXY[1]<=player2YH)) {
+                if ((posXY[0]<this.player2.getLowerX()) && (velXY[0]>0))
+                	this.puck.setVelocityXY(-velXY[0],velXY[1]);
+            } else if ((posXY[0]>=this.player2.getLowerX()) && (posXY[0]<=this.player2.getHigherX())) {
+                if (((posXY[1]<player2YL) && (velXY[1]>0))
+                        || ((posXY[1]>player2YH) && (velXY[1]<0)))
+                	this.puck.setVelocityXY(velXY[0],-velXY[1]);
             } else {
-                if(this.puck.getVelocityX()>0)
-                    this.reversePuckVelocityX();
-                this.reversePuckVelocityY();
+                if(velXY[0]>0)
+                	this.puck.setVelocityXY(-velXY[0],velXY[1]);
+                this.puck.setVelocityXY(velXY[0],-velXY[1]);
             }
         }
     }
 
-    private double xPuckDistance(Player player) {
-        return Math.abs(this.puck.getX() - player.getX());
-    }
-
-    private double yPuckDistance(Player player) {
-        return Math.abs(this.puck.getY() - player.getY());
-    }
+//    private double xPuckDistance(Player player) {
+//        return Math.abs(this.puck.getX() - player.getX());
+//    }
+//
+//    private double yPuckDistance(Player player) {
+//        return Math.abs(this.puck.getY() - player.getY());
+//    }
 }
