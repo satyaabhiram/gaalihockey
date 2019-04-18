@@ -1,22 +1,17 @@
 package com.gaalihockey.server;
 
-//import com.gaalihockey.message.Message;
-//import com.gaalihockey.message.MessageType;
-
 import java.net.*;
 import java.io.*;
-import java.util.ArrayList;
 
 public class ClientHandler implements Runnable {
     private Socket clientSocket;
 
-//    private Receiver receiver;
-//    private Sender sender;
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
-    private static ArrayList<MatchThread> matchThreads = new ArrayList<>();
     private static MatchThread openMatchThread;
+    private static int numberOfActiveMatchThreads = 0;
+    private static int numberOfPlayers = 0;
 
     private MatchThread matchThread;
 
@@ -44,25 +39,33 @@ public class ClientHandler implements Runnable {
         if (this.matchThread == null && openMatchThread == null) {
             this.matchThread = new MatchThread();
 
-            this.matchThread.setPlayer1(this.out, this.in);
+            this.matchThread.setPlayer1(this.clientSocket, this.out, this.in);
 
             openMatchThread = this.matchThread;
-            matchThreads.add(openMatchThread);
+            numberOfPlayers++;
         } else if (this.matchThread == null && openMatchThread.isOpen()) {
-            this.matchThread = openMatchThread;
-            this.matchThread.setOpen(false);
+            openMatchThread.setOpen(false);
 
-            this.matchThread.setPlayer2(this.out, this.in);
+            openMatchThread.setPlayer2(this.clientSocket, this.out, this.in);
 
-            Thread mt = new Thread(this.matchThread);
+            Thread mt = new Thread(openMatchThread);
             mt.start();
+
+            openMatchThread = null;
+            numberOfActiveMatchThreads++;
+            numberOfPlayers++;
+
+            System.out.println("Number of active matches: " + numberOfActiveMatchThreads + ".\nNumber of players connected: " + numberOfPlayers);
+
             try {
                 mt.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            openMatchThread = null;
+            numberOfActiveMatchThreads--;
+            numberOfPlayers-=2;
+            System.out.println("Number of active matches: " + numberOfActiveMatchThreads + ".\nNumber of players connected: " + numberOfPlayers);
         }
     }
 }

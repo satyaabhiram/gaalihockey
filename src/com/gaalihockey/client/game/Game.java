@@ -25,6 +25,7 @@ public class Game extends Application {
     public static Circle puck = null;
     //public static  Label variableLabel;
     public static Text text;
+    public static Text message;
     public static boolean isPlayer1 = true;
 
     public static boolean MATCH_STARTED = false;
@@ -73,12 +74,20 @@ public class Game extends Application {
         text.setFont(Font.font(40));
         text.setFill(Color.GRAY);
 
+        message = new Text();
+        message.setText("");
+        message.setX(400.0);
+        message.setY(200.0);
+        message.setFont(Font.font(60));
+        message.setFill(Color.GRAY);
+
         //Creating a Group object
         Group root = new Group(arena);
         root.getChildren().add(player1Striker);
         root.getChildren().add(player2Striker);
         root.getChildren().add(puck);
         root.getChildren().add(text);
+        root.getChildren().add(message);
         //Creating a scene object
         Scene scene = new Scene(root, 1000, 500);
 
@@ -88,7 +97,7 @@ public class Game extends Application {
             moveStrikerOnKeyPress(scene, player2Striker);
 
         //Setting title to the Stage
-        stage.setTitle("Gaali Hockey");
+        stage.setTitle("Gaali Hockey : " + (isPlayer1 ? "Player 1" : "Player 2"));
 
         //Adding scene to the stage
         stage.setScene(scene);

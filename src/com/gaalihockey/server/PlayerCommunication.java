@@ -5,6 +5,7 @@ import com.gaalihockey.message.MessageUtil;
 import com.gaalihockey.server.game.Game;
 import com.gaalihockey.server.game.Player;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -14,6 +15,7 @@ public class PlayerCommunication {
 	private ObjectInputStream in;
 	private Receiver receiver;
 	private Sender sender;
+	Thread receiverThread, senderThread;
 
 	public PlayerCommunication(Game game, Player player, ObjectOutputStream out, ObjectInputStream in) {
 		this.player = player;
@@ -24,57 +26,60 @@ public class PlayerCommunication {
 	}
 
 	public void startCommunication() {
-		Thread rt = new Thread(this.receiver);
-		rt.start();
-		//Commented this part of code
-		//        try {
-			//        	System.out.println("in Receiver thread");
-		//            rt.join();
-		//        } catch (InterruptedException e) {
-		//            e.printStackTrace();
-		//        }
-
-		//This statements will only execute when Thread rt is joined== closed.\ so 
-		Thread st = new Thread(this.sender);
-		st.start();
-//		try {
-//			System.out.println("in sender thread");
-//			st.join();
-//
-//			//Placing join rt here
-//			rt.join();
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
+		this.receiverThread = new Thread(this.receiver);
+		receiverThread.start();
+		senderThread = new Thread(this.sender);
+		senderThread.start();
 	}
 
-	public static void sendSearchingMessage(ObjectOutputStream out) {
+	public void interrupt() {
+		this.receiverThread.interrupt();
+		this.senderThread.interrupt();
+	}
+
+	public boolean isInterrupted() {
+		return this.receiverThread.isInterrupted() || this.senderThread.isInterrupted();
+	}
+
+	public boolean isAlive() {
+		return this.receiverThread.isAlive() && this.senderThread.isAlive();
+	}
+
+	public static void sendSearchingMessage(ObjectOutputStream out) throws IOException {
 		MessageUtil.sendMessage(out, MessageType.TEXT, "Searching for opponents!");
 	}
 
-	public void sendWaitingMessage() {
+	public void sendWaitingMessage() throws IOException {
 		MessageUtil.sendMessage(out, MessageType.TEXT, "No opponents available: waiting for opponents!");
-	};
+	}
 
-	public void sendInitializationMessage() {
+	public void sendInitializationMessage() throws IOException {
 		MessageUtil.sendMessage(out, MessageType.INITIALIZE, Integer.toString(this.player.getNumber()));
-	};
+	}
 
-	public void sendMatchFoundMessage() {
+	public void sendMatchFoundMessage() throws IOException {
 		MessageUtil.sendMessage(out, MessageType.TEXT, "Match found!");
-	};
+	}
 
-	public void sendMatchStartedMessage() {
+	public void sendMatchStartedMessage() throws IOException {
 		//System.out.println("match Started"+out.toString());
 		MessageUtil.sendMessage(out, MessageType.TEXT, "Match Started!");
-	};
+	}
 
-	public void sendStartMatchMessage() {
+	public void sendStartMatchMessage() throws IOException {
 		//System.out.println("Start"+out.toString()+"pc");
 		MessageUtil.sendMessage(out, MessageType.START);
 	}
 
-	public void sendPuckPosition(double puckX, double puckY) {
+	public void sendMatchWonMessage() throws IOException {
+		MessageUtil.sendMessage(out, MessageType.RESULT, Integer.toString(1));
+	}
+
+	public void sendMatchLostMessage() throws IOException {
+		MessageUtil.sendMessage(out, MessageType.RESULT, Integer.toString(0));
+	}
+
+	public void sendPuckPosition(double puckX, double puckY) throws IOException {
 		MessageUtil.sendMessage(out, MessageType.PUCK, Double.toString(puckX), Double.toString(puckY));
 	}
 

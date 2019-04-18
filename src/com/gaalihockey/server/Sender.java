@@ -21,34 +21,30 @@ public class Sender implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (!Thread.interrupted()) {
             // Write output when Game variables change
             try {
-            	//System.out.println("in Sender Server");
                 TimeUnit.MILLISECONDS.sleep(33);
                 this.sendPuckPosition();
                 this.sendOpponentPosition();
                 this.sendScore();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+//                e.printStackTrace();
+                break;
             }
-//            // This three function calls will never happen
-//            this.sendPuckPosition();
-//            this.sendOpponentPosition();
-//            this.sendScore();
         }
     }
 
-    private void sendPuckPosition() {
+    private void sendPuckPosition() throws Exception {
     	double[] temp = this.game.getPuck().getXY();
         MessageUtil.sendMessage(this.out, MessageType.PUCK, Double.toString(temp[0]), Double.toString(temp[1]));
     }
 
-    private void sendOpponentPosition() {
+    private void sendOpponentPosition() throws Exception {
         MessageUtil.sendMessage(this.out, MessageType.OPPONENT, Double.toString(this.player.getOpponent().getX()), Double.toString(this.player.getOpponent().getY()));
     }
 
-    private void sendScore() {
+    private void sendScore() throws Exception {
         MessageUtil.sendMessage(this.out, MessageType.SCORE, Integer.toString(this.game.getPlayer1().getScore()), Integer.toString(this.game.getPlayer2().getScore()));
     }
 }

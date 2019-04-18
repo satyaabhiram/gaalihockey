@@ -8,5 +8,6 @@ public enum MessageType {
     PUCK,
     STRIKER,
     OPPONENT,
-    SCORE
+    SCORE,
+    RESULT
 }

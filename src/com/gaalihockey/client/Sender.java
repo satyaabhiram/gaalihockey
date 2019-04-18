@@ -25,12 +25,13 @@ public class Sender implements Runnable {
                 if (Game.MATCH_STARTED) {
                     this.sendStrikerPosition();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+//                e.printStackTrace();
+                break;
             }
     	}
     }
-    private void sendStrikerPosition() {
+    private void sendStrikerPosition() throws IOException {
     	Rectangle striker;
     	if (Game.isPlayer1) {
     		striker = Game.player1Striker;

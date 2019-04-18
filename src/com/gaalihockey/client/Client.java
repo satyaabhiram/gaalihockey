@@ -66,7 +66,7 @@ public class Client {
         System.out.println("Gaali Hockey");
 
         Client client1 = new Client();
-        client1.startConnection("127.0.0.1", 1234);
+        client1.startConnection("192.168.0.9", 1234);
         client1.startGame();
         client1.stopConnection();
     }

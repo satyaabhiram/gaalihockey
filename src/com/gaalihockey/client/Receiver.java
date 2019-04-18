@@ -4,6 +4,7 @@ import com.gaalihockey.client.game.Game;
 import com.gaalihockey.client.game.GameController;
 import com.gaalihockey.message.Message;
 import com.gaalihockey.message.MessageType;
+import com.gaalihockey.message.MessageUtil;
 
 import java.io.*;
 
@@ -16,17 +17,16 @@ public class Receiver implements Runnable {
 
     @Override
     public void run() {
-    	System.out.println("Started Receiver thread");
         Message inputMessage;
         try {
-            while (!(inputMessage = (Message) this.in.readObject()).equals(null)) {
-                // System.out.println("Message from server!\nType: " + inputMessage.getMessageType() + "\nBody: " + inputMessage.getValue1() + ", " + inputMessage.getValue2());
-                // Handle input from server in swing
+            while ((inputMessage = MessageUtil.getMessage(this.in)) != null) {
+                // Handle input from server in javafx
 
                 MessageType mType=inputMessage.getMessageType();
 
                 switch (mType){
                     case TEXT:
+                        System.out.println("Message from server!\n" + inputMessage.getValue1() + "\n");
                         break;
 
                     case START:
@@ -74,23 +74,27 @@ public class Receiver implements Runnable {
 
                     case SCORE:
                     	if(Game.MATCH_STARTED) {
-                    		String player1Score=inputMessage.getValue1();
+                    		String player1Score = inputMessage.getValue1();
                             String player2Score = inputMessage.getValue2();
                     		Game.text.setText(player1Score+" : "+player2Score);
                         }
                         break;
                         
-                    case STRIKER:
+                    case RESULT:
+                        if(Game.MATCH_STARTED) {
+                            if (inputMessage.getValue1().equals("1"))
+                                Game.message.setText("YOU WON!");
+                            else if (inputMessage.getValue1().equals("0"))
+                                Game.message.setText("YOU LOST! :(");
+                        }
                     	break;
                     	
                     default:
                     	break;
                 }
             }
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Could not read message", e);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not read message", e);
+        } catch (Exception e) {
+//            throw new RuntimeException("Could not read message", e);
         }
     }
 }

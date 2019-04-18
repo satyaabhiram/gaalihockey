@@ -18,19 +18,23 @@ public class Receiver implements Runnable {
 	@Override
 	public void run() {
 		Message inputMessage;
-		while ((inputMessage = MessageUtil.getMessage(this.in)) != null) {
-			// Handle input from client in MatchPool
-			switch (inputMessage.getMessageType()) {
-			case TEXT:
-				System.out.println("Message from Player: " + inputMessage.getValue1());
-				break;
-			case STRIKER:
-				this.player.setX(Double.parseDouble(inputMessage.getValue1()));
-				this.player.setY(Double.parseDouble(inputMessage.getValue2()));
-				break;
-			default:
-				break;
+		try {
+			while (!Thread.interrupted() && ((inputMessage = MessageUtil.getMessage(this.in)) != null)) {
+				// Handle input from client in MatchPool
+				switch (inputMessage.getMessageType()) {
+					case TEXT:
+						System.out.println("Message from Player: " + inputMessage.getValue1());
+						break;
+					case STRIKER:
+						this.player.setX(Double.parseDouble(inputMessage.getValue1()));
+						this.player.setY(Double.parseDouble(inputMessage.getValue2()));
+						break;
+					default:
+						break;
+				}
 			}
+		} catch (Exception e) {
+//			throw new RuntimeException("Could not read input", e);
 		}
 	}
 }
