@@ -1,9 +1,9 @@
 # gaalihockey
 
 GitHub IDs and UFIDs:  
-Satya Abhiram Theli     (satyaabhiram)      5958-3952 . 
-Akshay Rechintala       (akshay4581)        4581-6988 . 
-Neel Rami               (neel_rami)         7712-3151 . 
+Satya Abhiram Theli     (satyaabhiram)      5958-3952 .   
+Akshay Rechintala       (akshay4581)        4581-6988 .   
+Neel Rami               (neel_rami)         7712-3151 .   
 
 Contributions:  
 We designed the project together. Identified and discussed the thread-safety aspects of the project.
