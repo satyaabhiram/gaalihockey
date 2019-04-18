@@ -4,7 +4,8 @@ public class Player {
     int number;
     int score;
     double x;
-    double y;
+    //y is volatile because only y value is changing and x is constant.
+    volatile double y;
 
     final double WIDTH_X = 10;
     final double WIDTH_Y = 80;
