@@ -4,7 +4,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Puck {
-    private double x, y, velocityX, velocityY;
+    //private double x, y, velocityX, velocityY;
+    private Position pos;
+    private Position velPos;
+    
     static final Lock positionLock = new ReentrantLock();
     static final Lock velocityLock = new ReentrantLock();
     
@@ -14,8 +17,9 @@ public class Puck {
     public void setVelocityXY(double x,double y) {
     	velocityLock.lock();
     	try {
-    		this.velocityX = x;
-    		this.velocityY = y;
+    		velPos = new Position(x, y);
+//    		this.velocityX = x;
+//    		this.velocityY = y;
     	}
     	finally {
     		velocityLock.unlock();
@@ -27,8 +31,9 @@ public class Puck {
             try {
             	if(velocityLock.tryLock()) {
             		try {
-            			this.x = this.x+this.velocityX;
-                    	this.y = this.y+this.velocityY;
+            			pos = new Position(pos.getX()+velPos.getX(),pos.getY()+velPos.getY());
+//            			this.x = this.x+this.velocityX;
+//                    	this.y = this.y+this.velocityY;
                     	return;
             		}
             		finally {
@@ -45,8 +50,9 @@ public class Puck {
     public void setXY(double x, double y) {
     	positionLock.lock();
     	try {
-    		this.x = x;
-    		this.y = y;
+    		pos = new Position(x,y);
+//    		this.x = x;
+//    		this.y = y;
     	}
     	finally {
 			positionLock.unlock();
@@ -56,7 +62,7 @@ public class Puck {
     public double[] getXY() {
     	positionLock.lock();
     	try {
-    		double[] temp = {this.x,this.y};
+    		double[] temp = {pos.getX(),pos.getY()};
     		return temp;
     	}
     	finally {
@@ -67,7 +73,7 @@ public class Puck {
     public double[] getXYVelocity() {
     	velocityLock.lock();
     	try {
-    		double[] velocity = {this.velocityX,this.velocityY};
+    		double[] velocity = {velPos.getX(),velPos.getY()};
     		return velocity;
     	}
     	finally {
