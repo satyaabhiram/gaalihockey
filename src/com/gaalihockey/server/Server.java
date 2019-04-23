@@ -15,6 +15,7 @@ public class Server {
 
         try {
             while (true) {
+                // Server listens to socket for new connections and creates a ClientHandler thread for each client
             	ClientHandler ch = new ClientHandler(serverSocket.accept());
                 //new Thread(new ClientHandler(serverSocket.accept())).start();
             	Thread chThread = new Thread(ch);

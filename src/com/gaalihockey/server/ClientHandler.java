@@ -11,9 +11,12 @@ public class ClientHandler implements Runnable {
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
+    // One MatchThread for each match.
+    // Static object openMatchThread to remember the MatchThread that is waiting for a player
     private static MatchThread openMatchThread;
     private static int numberOfActiveMatchThreads = 0;
     private static int numberOfPlayers = 0;
+    // lock to ensure static objects aren't accessed concurrently
     static final Lock matchThreadLock = new ReentrantLock();
 
     private MatchThread matchThread;
@@ -43,6 +46,7 @@ public class ClientHandler implements Runnable {
         matchThreadLock.lock();
         try {
             if (this.matchThread == null && openMatchThread == null) {
+                // If client is first player, create a MatchThread that is open, and store in static variable
                 this.matchThread = new MatchThread();
 
                 this.matchThread.setPlayer1(this.clientSocket, this.out, this.in);
@@ -50,6 +54,7 @@ public class ClientHandler implements Runnable {
                 openMatchThread = this.matchThread;
                 numberOfPlayers++;
             } else if (this.matchThread == null && openMatchThread.isOpen()) {
+                // If client is second player, add him to the static MatchThread object, reset static variable
                 openMatchThread.setOpen(false);
 
                 openMatchThread.setPlayer2(this.clientSocket, this.out, this.in);
@@ -61,7 +66,7 @@ public class ClientHandler implements Runnable {
                 numberOfActiveMatchThreads++;
                 numberOfPlayers++;
 
-                System.out.println("Number of active matches: " + numberOfActiveMatchThreads + ".\nNumber of players connected: " + numberOfPlayers);
+                System.out.println("Number of active matches: " + numberOfActiveMatchThreads + "\nNumber of players connected: " + numberOfPlayers);
             }
         } finally {
             matchThreadLock.unlock();
@@ -69,6 +74,7 @@ public class ClientHandler implements Runnable {
 
         if (mt != null) {
             try {
+                // Wait for the match to end before terminating ClientHandler thread
                 mt.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -76,7 +82,7 @@ public class ClientHandler implements Runnable {
 
             numberOfActiveMatchThreads--;
             numberOfPlayers-=2;
-            System.out.println("Number of active matches: " + numberOfActiveMatchThreads + ".\nNumber of players connected: " + numberOfPlayers);
+            System.out.println("Number of active matches: " + numberOfActiveMatchThreads + "\nNumber of players connected: " + numberOfPlayers);
         }
     }
 }
