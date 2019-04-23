@@ -2,6 +2,8 @@ package com.gaalihockey.server;
 
 import java.net.*;
 import java.io.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ClientHandler implements Runnable {
     private Socket clientSocket;
@@ -12,6 +14,7 @@ public class ClientHandler implements Runnable {
     private static MatchThread openMatchThread;
     private static int numberOfActiveMatchThreads = 0;
     private static int numberOfPlayers = 0;
+    static final Lock matchThreadLock = new ReentrantLock();
 
     private MatchThread matchThread;
 
@@ -36,27 +39,35 @@ public class ClientHandler implements Runnable {
     }
 
     private void joinMatch() {
-        if (this.matchThread == null && openMatchThread == null) {
-            this.matchThread = new MatchThread();
+        Thread mt = null;
+        matchThreadLock.lock();
+        try {
+            if (this.matchThread == null && openMatchThread == null) {
+                this.matchThread = new MatchThread();
 
-            this.matchThread.setPlayer1(this.clientSocket, this.out, this.in);
+                this.matchThread.setPlayer1(this.clientSocket, this.out, this.in);
 
-            openMatchThread = this.matchThread;
-            numberOfPlayers++;
-        } else if (this.matchThread == null && openMatchThread.isOpen()) {
-            openMatchThread.setOpen(false);
+                openMatchThread = this.matchThread;
+                numberOfPlayers++;
+            } else if (this.matchThread == null && openMatchThread.isOpen()) {
+                openMatchThread.setOpen(false);
 
-            openMatchThread.setPlayer2(this.clientSocket, this.out, this.in);
+                openMatchThread.setPlayer2(this.clientSocket, this.out, this.in);
 
-            Thread mt = new Thread(openMatchThread);
-            mt.start();
+                mt = new Thread(openMatchThread);
+                mt.start();
 
-            openMatchThread = null;
-            numberOfActiveMatchThreads++;
-            numberOfPlayers++;
+                openMatchThread = null;
+                numberOfActiveMatchThreads++;
+                numberOfPlayers++;
 
-            System.out.println("Number of active matches: " + numberOfActiveMatchThreads + ".\nNumber of players connected: " + numberOfPlayers);
+                System.out.println("Number of active matches: " + numberOfActiveMatchThreads + ".\nNumber of players connected: " + numberOfPlayers);
+            }
+        } finally {
+            matchThreadLock.unlock();
+        }
 
+        if (mt != null) {
             try {
                 mt.join();
             } catch (InterruptedException e) {
